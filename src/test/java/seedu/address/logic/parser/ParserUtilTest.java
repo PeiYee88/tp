@@ -16,6 +16,7 @@ import org.junit.jupiter.api.Test;
 import seedu.address.logic.parser.exceptions.ParseException;
 import seedu.address.model.person.Address;
 import seedu.address.model.person.Email;
+import seedu.address.model.person.HospitalWing;
 import seedu.address.model.person.Name;
 import seedu.address.model.person.Phone;
 import seedu.address.model.tag.Tag;
@@ -26,11 +27,13 @@ public class ParserUtilTest {
     private static final String INVALID_ADDRESS = " ";
     private static final String INVALID_EMAIL = "example.com";
     private static final String INVALID_TAG = "#friend";
+    private static final String INVALID_HOSPITAL_WING = " ";
 
     private static final String VALID_NAME = "Rachel Walker";
     private static final String VALID_PHONE = "123456";
     private static final String VALID_ADDRESS = "123 Main Street #0505";
     private static final String VALID_EMAIL = "rachel@example.com";
+    private static final String VALID_HOSPITAL_WING = "south";
     private static final String VALID_TAG_1 = "friend";
     private static final String VALID_TAG_2 = "neighbour";
 
@@ -147,6 +150,30 @@ public class ParserUtilTest {
         Email expectedEmail = new Email(VALID_EMAIL);
         assertEquals(expectedEmail, ParserUtil.parseEmail(emailWithWhitespace));
     }
+
+    @Test
+    public void parseHospitalWing_null_throwsNullPointerException() {
+        assertThrows(NullPointerException.class, () -> ParserUtil.parseHospitalWing((String) null));
+    }
+
+    @Test
+    public void parseHospitalWing_invalidValue_throwsParseException() {
+        assertThrows(ParseException.class, () -> ParserUtil.parseAddress(INVALID_HOSPITAL_WING));
+    }
+
+    @Test
+    public void parseHospitalWing_validValueWithoutWhitespace_returnsHospitalWing() throws Exception {
+        HospitalWing expectedHospitalWing = new HospitalWing(VALID_HOSPITAL_WING);
+        assertEquals(expectedHospitalWing, ParserUtil.parseHospitalWing(VALID_HOSPITAL_WING));
+    }
+
+    @Test
+    public void parseHospitalWing_validValueWithWhitespace_returnsTrimmedHospitalWing() throws Exception {
+        String hospitalWingWithWhitespace = WHITESPACE + VALID_HOSPITAL_WING + WHITESPACE;
+        HospitalWing expectedHospitalWing = new HospitalWing(VALID_HOSPITAL_WING);
+        assertEquals(expectedHospitalWing, ParserUtil.parseAddress(hospitalWingWithWhitespace));
+    }
+
 
     @Test
     public void parseTag_null_throwsNullPointerException() {
